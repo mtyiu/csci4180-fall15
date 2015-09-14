@@ -1,281 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Tutorial 1 - VM Management on OpenStack (2015.09.17) | CSCI 4180</title>
-    <link href="css/bootstrap.min.css" rel="stylesheet">
-    <link href="css/font-awesome.min.css" rel="stylesheet">
-    <link href="css/style.css" rel="stylesheet">
-    <link href="favicon.png" rel="icon" type="image/png" />
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-        <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]-->
-    <script>
-        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-        (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-        m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
-        
-        ga('create', 'UA-54224271-3', 'auto');
-        ga('send', 'pageview');
-    </script>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tutorial 1 - VM Management on OpenStack (2015.09.17) | CSCI 4180</title>
+	<link href="css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/font-awesome.min.css" rel="stylesheet">
+	<link href="css/style.css" rel="stylesheet">
+	<link href="favicon.png" rel="icon" type="image/png" />
+	<!--[if lt IE 9]>
+		<script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+		<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+	<![endif]-->
+	<script>
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+		ga('create', 'UA-54224271-3', 'auto');
+		ga('send', 'pageview');
+	</script>
 </head>
 <body>
-    <div class="container-fluid">
-        <a name="top"></a>
-        <h3><i class="fa fa-cloud"></i> CSCI 4180: Introduction to Cloud Computing and Storage</h3>
-        <h4>
-            Tutorial 1 - VM Management on OpenStack (2015.09.17)<br />
-            <small>Prepared by Matt YIU, Man Tung</small>
-        </h4>
-        <hr class="header" />
+	<div class="container-fluid">
+		<a name="top"></a>
+		<h3><i class="fa fa-cloud"></i> CSCI 4180: Introduction to Cloud Computing and Storage</h3>
+		<h4>
+			Tutorial 1 - VM Management on OpenStack (2015.09.17)<br />
+			<small>Prepared by <a href="http://www.cse.cuhk.edu.hk/~mtyiu" target="_blank">Matt YIU, Man Tung</a> (<code>mtyiu@cse</code>)</small><br />
+			<small><strong>Office:</strong> SHB 118;&nbsp;&nbsp;<strong>Office Hour:</strong> Thursday, 3-5 pm</small>
+		</h4>
+		<hr class="header" />
 
-        <h4>Outline</h4>
-        <div class="row">
-            <div class="col-md-8">
-                <ul>
-                    <li><a href="#introduction">Introduction</a></li>
-                    <li><a href="#platform">Our platform</a></li>
-                    <li><a href="#architecture">Architecture</a></li>
-                    <li><a href="#preparation">Preparation</a></li>
-                    <li><a href="#login">Logging in the dashboard</a></li>
-                    <li><a href="#keypair">Creating a keypair</a></li>
-                    <li><a href="#launch-vm">Launching a VM</a></li>
-                    <li><a href="#password">Obtaining the password</a></li>
-                    <li><a href="#ssh">SSH into the VM</a></li>
-                    <li>
-                        <a href="#configure">Configuring your VM</a>
-                        <ul>
-                            <li><a href="#configure-password">Changing password</a></li>
-                            <li><a href="#configure-proxy">Setting up HTTP proxy</a></li>
-                            <li><a href="#configure-update">Updating the system packages</a></li>
-                            <li><a href="#configure-java">Installing Java</a></li>
-                        </ul>
-                    </li>
-                    <li><a href="#vms">Preparing 2 more VMs</a></li>
-                    <li><a href="#hosts">Configuring <code>/etc/hosts</code></a></li>
-                    <li><a href="#scp">Bonus: Using <code>scp</code></a></li>
-                </ul>
-            </div>
-            <div class="col-md-4">
-            </div>
-        </div>
+		<h4>Outline</h4>
+		<div class="row">
+			<div class="col-md-8">
+				<ul>
+					<li><a href="#introduction">Introduction</a></li>
+					<li><a href="#platform">Our platform</a></li>
+					<li><a href="#architecture">Architecture</a></li>
+					<li><a href="#preparation">Preparation</a></li>
+					<li><a href="#login">Logging in the dashboard</a></li>
+					<li><a href="#keypair">Creating a keypair</a></li>
+					<li><a href="#launch-vm">Launching a VM</a></li>
+					<li><a href="#password">Obtaining the password</a></li>
+					<li><a href="#ssh">SSH into the VM</a></li>
+					<li>
+						<a href="#configure">Configuring your VM</a>
+						<ul>
+							<li><a href="#configure-password">Changing password</a></li>
+							<li><a href="#configure-proxy">Setting up HTTP proxy</a></li>
+							<li><a href="#configure-update">Updating the system packages</a></li>
+							<li><a href="#configure-java">Installing Java</a></li>
+						</ul>
+					</li>
+					<li><a href="#vms">Preparing 2 more VMs</a></li>
+					<li><a href="#hosts">Configuring <code>/etc/hosts</code></a></li>
+					<li><a href="#scp">Bonus: Using <code>scp</code></a></li>
+				</ul>
+			</div>
+			<div class="col-md-4">
+			</div>
+		</div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="introduction"></a>
-        <h4>Introduction</h4>
-        <p>In Assignment 1 (Part 1), you need to configure Hadoop in fully distributed mode on all your assigned virtual machines. This tutorial covers basic VM management on OpenStack, which is our official platform for development and grading. For the instructions of configuring Hadoop, please refer to the next tutorial by ZHANG Mi.</p>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="introduction"></a>
+		<h4>Introduction</h4>
+		<p>In Assignment 1 (Part 1), you need to configure Hadoop in fully distributed mode on all your assigned virtual machines. This tutorial covers basic VM management on OpenStack, which is our official platform for development and grading. For the instructions of configuring Hadoop, please refer to the next tutorial by ZHANG Mi.</p>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="platform"></a>
-        <h4>Our platform</h4>
-        <ul>
-            <li>A cloud platform is built using OpenStack for this course</li>
-            <li>The platform is an example of IaaS</li>
-            <li>Other examples of IaaS: Amazon EC2, Microsoft Azure, Google Compute Engine, etc.</li>
-            <li>
-                Specification
-                <ul>
-                    <li>
-                        <strong>Nodes</strong>
-                        <ul>
-                            <li>1 control node (2 x Intel Xeon CPU, 16 GB RAM)</li>
-                            <li>20 compute notes (Intel i5 CPU, 8 GB RAM)</li>
-                        </ul>
-                    </li>
-                    <li><strong>VM OS:</strong> Ubuntu Server 12.04 (i386)</li>
-                    <li><strong>Management panel: </strong><a href="http://pc89214.cse.cuhk.edu.hk/dashboard/" target="_blank">OpenStack Dashboard Panel</a> (only accessible within CSE network)</li>
-                </ul>
-            </li>
-            <li>
-                Resource quota per group
-                <ul>
-                    <li><strong>RAM: </strong>3 GB</li>
-                    <li><strong>Virtual CPUs (vCPU): </strong>3</li>
-                    <li><strong>Instance (or VM) count: </strong>3</li>
-                    <li><strong>Disk: </strong>20 GB</li>
-                </ul>
-            </li>
-        </ul>
-        <p>
-            <i class="fa fa-bullhorn"></i>
-            <strong>Your job: </strong>
-            Configure Hadoop in fully distributed mode on <strong>3</strong> VMs on our OpenStack platform
-        </p>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="platform"></a>
+		<h4>Our platform</h4>
+		<ul>
+			<li>A cloud platform is built using OpenStack for this course</li>
+			<li>The platform is an example of IaaS</li>
+			<li>Other examples of IaaS: Amazon EC2, Microsoft Azure, Google Compute Engine, etc.</li>
+			<li>
+				Specification
+				<ul>
+					<li>
+						<strong>Nodes</strong>
+						<ul>
+							<li>1 control node (2 x Intel Xeon CPU, 16 GB RAM)</li>
+							<li>20 compute notes (Intel i5 CPU, 8 GB RAM)</li>
+						</ul>
+					</li>
+					<li><strong>VM OS:</strong> Ubuntu Server 12.04 (i386)</li>
+					<li><strong>Management panel: </strong><a href="http://pc89214.cse.cuhk.edu.hk/dashboard/" target="_blank">OpenStack Dashboard Panel</a> (only accessible within CSE network)</li>
+				</ul>
+			</li>
+			<li>
+				Resource quota per group
+				<ul>
+					<li><strong>RAM: </strong>3 GB</li>
+					<li><strong>Virtual CPUs (vCPU): </strong>3</li>
+					<li><strong>Instance (or VM) count: </strong>3</li>
+					<li><strong>Disk: </strong>20 GB</li>
+				</ul>
+			</li>
+		</ul>
+		<p>
+			<i class="fa fa-bullhorn"></i>
+			<strong>Your job: </strong>
+			Configure Hadoop in fully distributed mode on <strong>3</strong> VMs on our OpenStack platform
+		</p>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="architecture"></a>
-        <h4>Architecture</h4>
-        <p>For simplicity, we call the 3 VMs <code>vm1</code>, <code>vm2</code> and <code>vm3</code>. The following figure shows the architecture of our required deployment:</p>
-        <div class="row">
-            <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
-                <img src="images/architecture.png" alt="Architecture" class="img-responsive img-architecture" />
-            </div>
-        </div>
-        <p>The roles of each VM are as follows:</p>
-        <ul>
-            <li><code>vm1</code>: <em>(master)</em> namenode, jobtracker; <em>(slave)</em> datanode &amp; tasktracker</li>
-            <li><code>vm2</code>: <em>(slave)</em> datanode &amp; tasktracker</li>
-            <li><code>vm3</code>: <em>(slave)</em> datanode &amp; tasktracker</li>
-        </ul>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="architecture"></a>
+		<h4>Architecture</h4>
+		<p>For simplicity, we call the 3 VMs <code>vm1</code>, <code>vm2</code> and <code>vm3</code>. The following figure shows the architecture of our required deployment:</p>
+		<div class="row">
+			<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+				<img src="images/architecture.png" alt="Architecture" class="img-responsive img-architecture" />
+			</div>
+		</div>
+		<p>The roles of each VM are as follows:</p>
+		<ul>
+			<li><code>vm1</code>: <em>(master)</em> namenode, jobtracker; <em>(slave)</em> datanode &amp; tasktracker</li>
+			<li><code>vm2</code>: <em>(slave)</em> datanode &amp; tasktracker</li>
+			<li><code>vm3</code>: <em>(slave)</em> datanode &amp; tasktracker</li>
+		</ul>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="preparation"></a>
-        <h4>Preparation</h4>
-        <p>Now we are almost ready to get your hands dirty. Before we log in to the OpenStack Dashboard, you need to prepare:</p>
-        <ul>
-            <li>Your CSE UNIX Account (email me if you do not have one)</li>
-            <li>A networked computer which is connected to the CSE VPN / in CSE network (e.g., the computers in our labs) <a href="https://wiki.cse.cuhk.edu.hk/tech/network/vpn/l2tp-ipsec" target="_blank">[<i class="fa fa-info-circle"></i> how to connect?]</a></li>
-            <li><em>(Windows user only)</em> Secure Shell Client or <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html" target="_blank">PuTTY</a></li>
-            <li>A web browser (Chrome or Firefox is suggested, but not Internet Explorer <i class="fa fa-smile-o"></i>)</li>
-            <li>The user name and password for logging in the OpenStack Dashboard (which will be distributed after the add-drop period)</li>
-        </ul>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="preparation"></a>
+		<h4>Preparation</h4>
+		<p>Now we are almost ready to get your hands dirty. Before we log in to the OpenStack Dashboard, you need to prepare:</p>
+		<ul>
+			<li>Your CSE UNIX Account (email me if you do not have one)</li>
+			<li>A networked computer which is connected to the CSE VPN / in CSE network (e.g., the computers in our labs) <a href="https://wiki.cse.cuhk.edu.hk/tech/network/vpn/l2tp-ipsec" target="_blank">[<i class="fa fa-info-circle"></i> how to connect?]</a></li>
+			<li><em>(Windows user only)</em> Secure Shell Client or <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html" target="_blank">PuTTY</a></li>
+			<li>A web browser (Chrome or Firefox is suggested, but not Internet Explorer <i class="fa fa-smile-o"></i>)</li>
+			<li>The user name and password for logging in the OpenStack Dashboard (which will be distributed after the add-drop period)</li>
+		</ul>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="login"></a>
-        <div class="row">
-            <div class="col-sm-8">
-                <h4>Logging in the dashboard</h4>
-                <p>Navigate to <a href="http://137.189.89.214/dashboard/" target="_blank">http://137.189.89.214/dashboard/</a> or <a href="http://pc89214.cse.cuhk.edu.hk/dashboard/" target="_blank">http://pc89214.cse.cuhk.edu.hk/dashboard/</a> (both URLs point to the same server) and log in with your user name and password.</p>
-            </div>
-            <div class="col-sm-4">
-                <p align="center">
-                    <img src="images/login.png" alt="Login" class="img-responsive img-architecture" />
-                </p>
-            </div>
-        </div>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="login"></a>
+		<div class="row">
+			<div class="col-sm-8">
+				<h4>Logging in the dashboard</h4>
+				<p>Navigate to <a href="http://137.189.89.214/dashboard/" target="_blank">http://137.189.89.214/dashboard/</a> or <a href="http://pc89214.cse.cuhk.edu.hk/dashboard/" target="_blank">http://pc89214.cse.cuhk.edu.hk/dashboard/</a> (both URLs point to the same server) and log in with your user name and password.</p>
+			</div>
+			<div class="col-sm-4">
+				<p align="center">
+					<img src="images/login.png" alt="Login" class="img-responsive img-architecture" />
+				</p>
+			</div>
+		</div>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="keypair"></a>
-        <h4>Creating a keypair</h4>
-        <div class="row">
-            <div class="col-md-6">
-                <div id="carousel-create-keypair" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carousel-create-keypair" data-slide-to="0" class="active"></li>
-                        <li data-target="#carousel-create-keypair" data-slide-to="1"></li>
-                        <li data-target="#carousel-create-keypair" data-slide-to="2"></li>
-                    </ol>
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img src="images/create-keypair-1.png" alt="Creating a keypair (1)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 1</small></h3>
-                                Navigate to "Access &amp; Security" panel and
-                                select "Create keypair"
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="images/create-keypair-2.png" alt="Creating a keypair (2)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 2</small></h3>
-                                Pick a keypair name
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="images/create-keypair-3.png" alt="Creating a keypair (3)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 3</small></h3>
-                                Download the private key
-                            </div>
-                        </div>
-                    </div>
-                    <a class="left carousel-control" href="#carousel-create-keypair" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#carousel-create-keypair" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <p>There are two approaches to log in to the VMs: using user name and password, or using public key authentication <a href="https://help.ubuntu.com/community/SSH/OpenSSH/Keys" target="_blank">[<i class="fa fa-question-circle"></i>]</a>. The later one is widely supported in cloud platform (e.g., Amazon EC2) so you are suggested to try it now! (<strong>Note: </strong>As usual, Windows users will face some difficulties when using public key authentication for SSH. Thus, you may stick with password authentication and ignore this part.)</p>
-                <p>In public key authentication, two files will be generated, namely the private key and public key. The public key is stored inside the machine, while the private key is kept in a separate place as it is required to log in.</p>
-                <p>In our OpenStack platform, the key generation is done for you. You just need to request for a keypair from the dashboard, and then you can download the private key.</p>
-                <p><strong>Step 1.</strong> Navigate to "Access &amp; Security" panel and select "Create keypair".</p>
-                <p><strong>Step 2.</strong> Pick a keypair name</p>
-                <p><strong>Step 3.</strong> Download the private key (<code>*.pem</code>). <span class="text-danger"><strong>You will only have one chance to download the private key so please keep it carefully!</strong></p>
-            </div>
-        </div>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="keypair"></a>
+		<h4>Creating a keypair</h4>
+		<div class="row">
+			<div class="col-md-6">
+				<div id="carousel-create-keypair" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
+					<ol class="carousel-indicators">
+						<li data-target="#carousel-create-keypair" data-slide-to="0" class="active"></li>
+						<li data-target="#carousel-create-keypair" data-slide-to="1"></li>
+						<li data-target="#carousel-create-keypair" data-slide-to="2"></li>
+					</ol>
+					<div class="carousel-inner" role="listbox">
+						<div class="item active">
+							<img src="images/create-keypair-1.png" alt="Creating a keypair (1)">
+							<div class="carousel-caption">
+								<h3><small>Step 1</small></h3>
+								Navigate to "Access &amp; Security" panel and
+								select "Create keypair"
+							</div>
+						</div>
+						<div class="item">
+							<img src="images/create-keypair-2.png" alt="Creating a keypair (2)">
+							<div class="carousel-caption">
+								<h3><small>Step 2</small></h3>
+								Pick a keypair name
+							</div>
+						</div>
+						<div class="item">
+							<img src="images/create-keypair-3.png" alt="Creating a keypair (3)">
+							<div class="carousel-caption">
+								<h3><small>Step 3</small></h3>
+								Download the private key
+							</div>
+						</div>
+					</div>
+					<a class="left carousel-control" href="#carousel-create-keypair" role="button" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-create-keypair" role="button" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<p>There are two approaches to log in to the VMs: using user name and password, or using public key authentication <a href="https://help.ubuntu.com/community/SSH/OpenSSH/Keys" target="_blank">[<i class="fa fa-question-circle"></i>]</a>. The later one is widely supported in cloud platform (e.g., Amazon EC2) so you are suggested to try it now! (<strong>Note: </strong>As usual, Windows users will face some difficulties when using public key authentication for SSH. Thus, you may stick with password authentication and ignore this part.)</p>
+				<p>In public key authentication, two files will be generated, namely the private key and public key. The public key is stored inside the machine, while the private key is kept in a separate place as it is required to log in.</p>
+				<p>In our OpenStack platform, the key generation is done for you. You just need to request for a keypair from the dashboard, and then you can download the private key.</p>
+				<p><strong>Step 1.</strong> Navigate to "Access &amp; Security" panel and select "Create keypair".</p>
+				<p><strong>Step 2.</strong> Pick a keypair name</p>
+				<p><strong>Step 3.</strong> Download the private key (<code>*.pem</code>). <span class="text-danger"><strong>You will only have one chance to download the private key so please keep it carefully!</strong></p>
+			</div>
+		</div>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="launch-vm"></a>
-        <h4>Launching a VM</h4>
-        <div class="row">
-            <div class="col-md-6">
-                <div id="carousel-launch-vm" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carousel-launch-vm" data-slide-to="0" class="active"></li>
-                        <li data-target="#carousel-launch-vm" data-slide-to="1"></li>
-                        <li data-target="#carousel-launch-vm" data-slide-to="2"></li>
-                    </ol>
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img src="images/launch-vm-1.png" alt="Launching a VM (1)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 1</small></h3>
-                                Navigate to "Images &amp; Snapshots" panel and
-                                select Ubuntu Server 12.04 (i386)
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="images/launch-vm-2.png" alt="Launching a VM (2)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 2</small></h3>
-                                Fill in the details (see below)
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="images/launch-vm-3.png" alt="Launching a VM (3)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 3</small></h3>
-                                The status is shown on the "Instances &amp; Volumes" panel
-                            </div>
-                        </div>
-                    </div>
-                    <a class="left carousel-control" href="#carousel-launch-vm" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#carousel-launch-vm" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <p>
-                    <strong>Step 1.</strong>
-                    Navigate to "Images &amp; Snapshots" panel and select Ubuntu Server 12.04 (i386). Other operating systems are not accepted in our assignment.
-                </p>
-                <p>
-                    <strong>Step 2.</strong>
-                    Fill in the details as follows:
-                    <ul>
-                        <li><strong>Server Name:</strong> Pick any name you want. In this example, we use the name <code>vm1</code>.</li>
-                        <li>
-                            <strong>User Data:</strong> To log in your VM with password, you need to copy the following shell script to this field such that you can find the root password in the log later:
-                        </li>
-                    </ul>
-                    <pre>#!/bin/bash
+		<a name="launch-vm"></a>
+		<h4>Launching a VM</h4>
+		<div class="row">
+			<div class="col-md-6">
+				<div id="carousel-launch-vm" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
+					<ol class="carousel-indicators">
+						<li data-target="#carousel-launch-vm" data-slide-to="0" class="active"></li>
+						<li data-target="#carousel-launch-vm" data-slide-to="1"></li>
+						<li data-target="#carousel-launch-vm" data-slide-to="2"></li>
+					</ol>
+					<div class="carousel-inner" role="listbox">
+						<div class="item active">
+							<img src="images/launch-vm-1.png" alt="Launching a VM (1)">
+							<div class="carousel-caption">
+								<h3><small>Step 1</small></h3>
+								Navigate to "Images &amp; Snapshots" panel and
+								select Ubuntu Server 12.04 (i386)
+							</div>
+						</div>
+						<div class="item">
+							<img src="images/launch-vm-2.png" alt="Launching a VM (2)">
+							<div class="carousel-caption">
+								<h3><small>Step 2</small></h3>
+								Fill in the details (see below)
+							</div>
+						</div>
+						<div class="item">
+							<img src="images/launch-vm-3.png" alt="Launching a VM (3)">
+							<div class="carousel-caption">
+								<h3><small>Step 3</small></h3>
+								The status is shown on the "Instances &amp; Volumes" panel
+							</div>
+						</div>
+					</div>
+					<a class="left carousel-control" href="#carousel-launch-vm" role="button" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-launch-vm" role="button" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<p>
+					<strong>Step 1.</strong>
+					Navigate to "Images &amp; Snapshots" panel and select Ubuntu Server 12.04 (i386). Other operating systems are not accepted in our assignment.
+				</p>
+				<p>
+					<strong>Step 2.</strong>
+					Fill in the details as follows:
+					<ul>
+						<li><strong>Server Name:</strong> Pick any name you want. In this example, we use the name <code>vm1</code>.</li>
+						<li>
+							<strong>User Data:</strong> To log in your VM with password, you need to copy the following shell script to this field such that you can find the root password in the log later:
+						</li>
+					</ul>
+					<pre>#!/bin/bash
 echo '----------------------------------'
 if [ "`cat /etc/shadow | grep root | cut -d: -f2`" == '!*' ]; then
 password=`dd if=/dev/urandom bs=1 count=320 2> /dev/null | tr -dc a-z2-9 | head -c8`
@@ -289,218 +290,226 @@ echo ''
 echo 'Please keep it well/change it, or you will risk losing your assignment work!'
 echo '----------------------------------'
 fi</pre>
-                    <ul>
-                        <li><strong>Flavor:</strong> Select <code>flavor.mini</code>. You can only use this one since you have limited resource quota.</li>
-                        <li><strong>Keypair:</strong> <em>(Optional)</em> If you prefer using public key authentication, select the keypair you just created from the select box.</li>
-                        <li><strong>Instance Count:</strong> Let's create the VM one by one. Fill in <code>1</code> here. (Well...you can try to create more at the same time, but according to my experience it does not always work!)</li>
-                        <li><strong>Security Groups:</strong> Remember to select the <code>default</code> security group. It allows you to access the VM using SSH.</li>
-                    </ul>
-                </p>
-                <p><strong>Step 3.</strong> The system will create the VM for you immediately. You can see the status of the VM in the "Instances &amp; Volumes" panel.</p>
-            </div>
-        </div>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+					<ul>
+						<li><strong>Flavor:</strong> Select <code>flavor.mini</code>. You can only use this one since you have limited resource quota.</li>
+						<li><strong>Keypair:</strong> <em>(Optional)</em> If you prefer using public key authentication, select the keypair you just created from the select box.</li>
+						<li><strong>Instance Count:</strong> Let's create the VM one by one. Fill in <code>1</code> here. (Well...you can try to create more at the same time, but according to my experience it does not always work!)</li>
+						<li><strong>Security Groups:</strong> Remember to select the <code>default</code> security group. It allows you to access the VM using SSH.</li>
+					</ul>
+				</p>
+				<p><strong>Step 3.</strong> The system will create the VM for you immediately. You can see the status of the VM in the "Instances &amp; Volumes" panel.</p>
+			</div>
+		</div>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="password"></a>
-        <h4>Obtaining the password</h4>
-        <div class="row">
-            <div class="col-md-6">
-                <div id="carousel-password" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
-                    <ol class="carousel-indicators">
-                        <li data-target="#carousel-password" data-slide-to="0" class="active"></li>
-                        <li data-target="#carousel-password" data-slide-to="1"></li>
-                        <li data-target="#carousel-password" data-slide-to="2"></li>
-                    </ol>
-                    <div class="carousel-inner" role="listbox">
-                        <div class="item active">
-                            <img src="images/password-1.png" alt="Obtaining the password (1)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 1</small></h3>
-                                Navigate to "Instances &amp; Volumes" panel and
-                                select the VM
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="images/password-2.png" alt="Obtaining the password (2)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 2</small></h3>
-                                Select the "Log" tab
-                            </div>
-                        </div>
-                        <div class="item">
-                            <img src="images/password-3.png" alt="Obtaining the password (3)">
-                            <div class="carousel-caption">
-                                <h3><small>Step 3</small></h3>
-                                The password is located near the end of the log
-                            </div>
-                        </div>
-                    </div>
-                    <a class="left carousel-control" href="#carousel-password" role="button" data-slide="prev">
-                        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                        <span class="sr-only">Previous</span>
-                    </a>
-                    <a class="right carousel-control" href="#carousel-password" role="button" data-slide="next">
-                        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                        <span class="sr-only">Next</span>
-                    </a>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <p class="text-warning"><i class="fa fa-exclamation-circle"></i> If you prefer using public key authentication, you can simply omit this part.</p>
-                <p>The shell script that we pasted in the User Data field is for obtaining the root password from the log. After the VM is launched, you can view the log from the dashboard and get the password.</p>
-                <p><strong>Step 1.</strong> Navigate to "Instances &amp; Volumes" panel and
-                select the VM you just created.</p>
-                <p><strong>Step 2.</strong> Select the "Log" tab.)</p>
-                <p><strong>Step 3.</strong> The password is located near the end of the log. If you can find it, try to view the full log by clicking the button on the top right corner</p>
-            </div>
-        </div>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="password"></a>
+		<h4>Obtaining the password</h4>
+		<div class="row">
+			<div class="col-md-6">
+				<div id="carousel-password" class="carousel slide" data-ride="carousel" data-interval="false" data-wrap="false">
+					<ol class="carousel-indicators">
+						<li data-target="#carousel-password" data-slide-to="0" class="active"></li>
+						<li data-target="#carousel-password" data-slide-to="1"></li>
+						<li data-target="#carousel-password" data-slide-to="2"></li>
+					</ol>
+					<div class="carousel-inner" role="listbox">
+						<div class="item active">
+							<img src="images/password-1.png" alt="Obtaining the password (1)">
+							<div class="carousel-caption">
+								<h3><small>Step 1</small></h3>
+								Navigate to "Instances &amp; Volumes" panel and
+								select the VM
+							</div>
+						</div>
+						<div class="item">
+							<img src="images/password-2.png" alt="Obtaining the password (2)">
+							<div class="carousel-caption">
+								<h3><small>Step 2</small></h3>
+								Select the "Log" tab
+							</div>
+						</div>
+						<div class="item">
+							<img src="images/password-3.png" alt="Obtaining the password (3)">
+							<div class="carousel-caption">
+								<h3><small>Step 3</small></h3>
+								The password is located near the end of the log
+							</div>
+						</div>
+					</div>
+					<a class="left carousel-control" href="#carousel-password" role="button" data-slide="prev">
+						<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+						<span class="sr-only">Previous</span>
+					</a>
+					<a class="right carousel-control" href="#carousel-password" role="button" data-slide="next">
+						<span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+						<span class="sr-only">Next</span>
+					</a>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<p class="text-warning"><i class="fa fa-exclamation-circle"></i> If you prefer using public key authentication, you can simply omit this part.</p>
+				<p>The shell script that we pasted in the User Data field is for obtaining the root password from the log. After the VM is launched, you can view the log from the dashboard and get the password.</p>
+				<p><strong>Step 1.</strong> Navigate to "Instances &amp; Volumes" panel and
+				select the VM you just created.</p>
+				<p><strong>Step 2.</strong> Select the "Log" tab.)</p>
+				<p><strong>Step 3.</strong> The password is located near the end of the log. If you can find it, try to view the full log by clicking the button on the top right corner</p>
+			</div>
+		</div>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="ssh"></a>
-        <h4>SSH into the VM</h4>
-        <p>We are finally ready to SSH into our VM! As mentioned above, we have two methods to log in. I will demonstrate them separately.</p>
-        <div class="row">
-            <div class="col-md-6">
-                <h5>Password authentication</h5>
-                <p>For <strong>Windows</strong> users, you need to use PuTTY. Specify the server host, user name, and port number as follows.</p>
-                <ul>
-                    <li><strong>Server Host:</strong> <code>137.189.89.214</code> OR <code>pc89214.cse.cuhk.edu.hk</code></li>
-                    <li><strong>User name:</strong> <code>root</code></li>
-                    <li><strong>Port number:</strong> <code>122XX</code> (see below)</li>
-                </ul>
+		<a name="ssh"></a>
+		<h4>SSH into the VM</h4>
+		<p>We are finally ready to SSH into our VM! As mentioned above, we have two methods to log in. I will demonstrate them separately.</p>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-success">
+					<div class="panel-heading"><h6>Password authentication</h6></div>
+					<div class="panel-body">
+						<p>For <strong>Windows</strong> users, you need to use PuTTY. Specify the server host, user name, and port number as follows.</p>
+						<ul>
+							<li><strong>Server Host:</strong> <code>137.189.89.214</code> OR <code>pc89214.cse.cuhk.edu.hk</code></li>
+							<li><strong>User name:</strong> <code>root</code></li>
+							<li><strong>Port number:</strong> <code>122XX</code> (see below)</li>
+						</ul>
 
-                <p>For <strong>Mac/Linux</strong> users, open your terminal and type: <code>ssh root@137.189.89.214 -p 122XX</code> where <code>122XX</code> is the port number (see the table below)</p>
-            </div>
-            <div class="col-md-6">
-                <h5>Public key authentication</h5>
-                <p class="text-danger"><i class="fa fa-exclamation-triangle"></i>Windows users can try <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html" target="_blank">this guide</a> to log in using PuTTY. But, switching back to password authentication makes your life easier...</p>
+						<p>For <strong>Mac/Linux</strong> users, open your terminal and type: <code>ssh root@137.189.89.214 -p 122XX</code> where <code>122XX</code> is the port number (see the table below)</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-success">
+					<div class="panel-heading"><h6>Public key authentication</h6></div>
+					<div class="panel-body">
+						<p class="text-danger"><i class="fa fa-exclamation-triangle"></i>Windows users can try <a href="http://docs.aws.amazon.com/AWSEC2/latest/UserGuide/putty.html" target="_blank">this guide</a> to log in using PuTTY. But, switching back to password authentication makes your life easier...</p>
 
-                <p>For <strong>Mac/Linux</strong> users, open your terminal and type: <code>ssh -i <em>[path to the private key file]</em> <strong>ubuntu</strong>@137.189.89.214 -p 122XX</code> where <code>122XX</code> is the port number (see below). Note that the private key file must have a permission <code>400</code> (only readable by owner) - use the command <code>chmod 400 <em>[path to the private key file]</em></code> to change permission.</p>
-            </div>
-            <div class="col-md-12">
-                <p>We set up port mapping on the cloud controller (<code>pc89214</code>) such that you can access the VMs inside CSE network. The remapped port number is calculated as follows:</p>
-                <p class="text-center">
-                    <strong>
-                        If your instance IP is 10.10.11.<em>x</em> (which you can find in the "Instances &amp; Volumes" pane of the OpenStack Dashboard), then the remapped port number is 12200 + <em>x</em>.
-                    </strong>
-                </p>
-                <p>Examples:</p>
-                <div align="center">
-                    <table class="table table-striped table-condensed table-ports">
-                        <thead>
-                            <th>Instance IP</th>
-                            <th>Port number for accessing the VM</th>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td><code>10.10.11.2</code></td>
-                                <td><code>12202</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>10.10.11.88</code></td>
-                                <td><code>12288</code></td>
-                            </tr>
-                            <tr>
-                                <td><code>10.10.11.184</code></td>
-                                <td><code>12384</code></td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-        </div>
-        <p>After that, you should see the following screen:</p>
-        <div class="row">
-            <div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
-                <img src="images/ssh.png" alt="SSH" class="img-responsive img-ssh" />
-            </div>
-        </div>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+						<p>For <strong>Mac/Linux</strong> users, open your terminal and type: <code>ssh -i <em>[path to the private key file]</em> <strong>ubuntu</strong>@137.189.89.214 -p 122XX</code> where <code>122XX</code> is the port number (see below). Note that the private key file must have a permission <code>400</code> (only readable by owner) - use the command <code>chmod 400 <em>[path to the private key file]</em></code> to change permission.</p>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-12">
+				<p>We set up port mapping on the cloud controller (<code>pc89214</code>) such that you can access the VMs inside CSE network. The remapped port number is calculated as follows:</p>
+				<p class="text-center">
+					<strong>
+						If your instance IP is 10.10.11.<em>x</em> (which you can find in the "Instances &amp; Volumes" pane of the OpenStack Dashboard), then the remapped port number is 12200 + <em>x</em>.
+					</strong>
+				</p>
+				<p>Examples:</p>
+				<div align="center">
+					<table class="table table-striped table-condensed table-ports">
+						<thead>
+							<th>Instance IP</th>
+							<th>Port number for accessing the VM</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td><code>10.10.11.2</code></td>
+								<td><code>12202</code></td>
+							</tr>
+							<tr>
+								<td><code>10.10.11.88</code></td>
+								<td><code>12288</code></td>
+							</tr>
+							<tr>
+								<td><code>10.10.11.184</code></td>
+								<td><code>12384</code></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<p>After that, you should see the following screen:</p>
+		<div class="row">
+			<div class="col-lg-6 col-lg-offset-3 col-md-8 col-md-offset-2">
+				<img src="images/ssh.png" alt="SSH" class="img-responsive img-ssh" />
+			</div>
+		</div>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="configure"></a>
-        <h4>Configuring your VM</h4>
-        <p>For simplicity, we will use the <code>root</code> account to configure the VM such that we do not need to type <code>sudo</code> all the time. If you are not logged in as <code>root</code>, type <pre>sudo su -</pre></p>
+		<a name="configure"></a>
+		<h4>Configuring your VM</h4>
+		<p>For simplicity, we will use the <code>root</code> account to configure the VM such that we do not need to type <code>sudo</code> all the time. If you are not logged in as <code>root</code>, type <pre>sudo su -</pre></p>
 
-        <a name="configure-password"></a>
-        <h5>Changing password</h5>
-        <p>To change the password, use the command <code>passwd</code> and follow the instructions.</p>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="configure-password"></a>
+		<h5>Changing password</h5>
+		<p>To change the password, use the command <code>passwd</code> and follow the instructions.</p>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <a name="configure-proxy"></a>
-        <h5>Setting up HTTP proxy</h5>
-        <p>All machines in our CSE network needs to use a HTTP proxy to access the outside world. To do so, type the following commands:</p>
-        <pre>echo 'export http_proxy=http://proxy.cse.cuhk.edu.hk:8000' >> .bashrc
-echo 'export https_proxy=http://proxy.cse.cuhk.edu.hk:8000' >> .bashrc</pre>
-        <p>To take effect immediately, log out and log in again, or type:</p>
-        <pre>source .bashrc</pre>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="configure-proxy"></a>
+		<h5>Setting up HTTP proxy</h5>
+		<p>All machines in our CSE network needs to use a HTTP proxy to access the outside world. To do so, type the following commands:</p>
+		<pre>echo 'export http_proxy=http://proxy.cse.cuhk.edu.hk:8000' >> ~/.bashrc
+echo 'export https_proxy=http://proxy.cse.cuhk.edu.hk:8000' >> ~/.bashrc</pre>
+		<p>To take effect immediately, log out and log in again, or type:</p>
+		<pre>source ~/.bashrc</pre>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <a name="configure-update"></a>
-        <h5>Updating the system packages</h5>
-        <p>Some packages may be outdated so it is a good idea to update them at the beginning. Now, type</p>
-        <pre>apt-get update
+		<a name="configure-update"></a>
+		<h5>Updating the system packages</h5>
+		<p>Some packages may be outdated so it is a good idea to update them at the beginning. Now, type</p>
+		<pre>apt-get update
 apt-get upgrade</pre>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <a name="configure-java"></a>
-        <h5>Installing Java</h5>
-        <p>Java Development Kit (JDK) is required for Hadoop so we need to install it first. Now type the following commands (note: you need to confirm the operations for these commands):</p>
-        <pre>add-apt-repository ppa:webupd8team/java
+		<a name="configure-java"></a>
+		<h5>Installing Java</h5>
+		<p>Java Development Kit (JDK) is required for Hadoop so we need to install it first. Now type the following commands (note: you need to confirm the operations for these commands):</p>
+		<pre>add-apt-repository ppa:webupd8team/java
 apt-get update
 apt-get install oracle-java7-installer</pre>
-        <p>Check whether Java is installed properly:</p>
-        <pre>java -version</pre>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<p>Check whether Java is installed properly:</p>
+		<pre>java -version</pre>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="vms"></a>
-        <h4>Preparing 2 more VMs</h4>
-        <p>As we need 3 VMs in total, we need to create more instances in OpenStack. Now, repeat all the steps starting from the section "<a href="#launch-vm">Launching a VM</a>" until you complete the configuration of all VMs.</p>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="vms"></a>
+		<h4>Preparing 2 more VMs</h4>
+		<p>As we need 3 VMs in total, we need to create more instances in OpenStack. Now, repeat all the steps starting from the section "<a href="#launch-vm">Launching a VM</a>" until you complete the configuration of all VMs.</p>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="hosts"></a>
-        <h4>Configuring <code>/etc/hosts</code></h4>
-        <p>The last thing you can do before the next tutorial is to set up the <code>hosts</code> file. This file is used to map host names to IP addresses.</p>
-        <p>Now, edit the file "<code>/etc/hosts</code>" and append the following lines (change the IP addresses to the IP addresses of your VMs):</p>
-        <pre>10.10.11.2 vm1
+		<a name="hosts"></a>
+		<h4>Configuring <code>/etc/hosts</code></h4>
+		<p>The last thing you can do before the next tutorial is to set up the <code>hosts</code> file. This file is used to map host names to IP addresses.</p>
+		<p>Now, edit the file "<code>/etc/hosts</code>" and append the following lines (change the IP addresses to the IP addresses of your VMs):</p>
+		<pre>10.10.11.2 vm1
 10.10.11.3 vm2
 10.10.11.4 vm3
 </pre>
-        <p>Repeat these operations on <strong>ALL</strong> of the VMs.</p>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<p>Repeat these operations on <strong>ALL</strong> of the VMs.</p>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <a name="scp"></a>
-        <h4>Bonus: Using <code>scp</code></h4>
-        <p>There is a very useful command called <code>scp</code> that allows you to copy file from one machine to another using SSH. The command is almost identical to the oridinary <code>cp</code> command:</p>
-        <ul>
-            <li><strong>From local to remote server:</strong> <code>scp <em>[local file path]</em> <em>[remote server host]</em><strong>:</strong><em>[remote file path (default is home directory)]</em></code></li>
-            <li><strong>From remote server to local:</strong> <code>scp <em>[remote server host]</em><strong>:</strong><em>[remote file path]</em> <em>[local file path]</em></code></li>
-        </ul>
-        Examples:
-        <ul>
-            <li>Copy all Java source files in the current directory to the folder <code>asg1/</code> at <code>sparc1.cse.cuhk.edu.hk</code>: <pre>scp *.java sparc1.cse.cuhk.edu.hk:asg1/</pre></li>
-            <li>Copy the folder "<code>source</code>" in the current directory to the home directory at <code>linux1.cse.cuhk.edu.hk</code> with user name <code>mtyiu</code>: <pre>scp -r src mtyiu@linux1.cse.cuhk.edu.hk:</pre></li>
-        </ul>
-        <div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+		<a name="scp"></a>
+		<h4>Bonus: Using <code>scp</code></h4>
+		<p>There is a very useful command called <code>scp</code> that allows you to copy file from one machine to another using SSH. The command is almost identical to the oridinary <code>cp</code> command:</p>
+		<ul>
+			<li><strong>From local to remote server:</strong> <code>scp <em>[local file path]</em> <em>[remote server host]</em><strong>:</strong><em>[remote file path (default is home directory)]</em></code></li>
+			<li><strong>From remote server to local:</strong> <code>scp <em>[remote server host]</em><strong>:</strong><em>[remote file path]</em> <em>[local file path]</em></code></li>
+		</ul>
+		Examples:
+		<ul>
+			<li>Copy all Java source files in the current directory to the folder <code>asg1/</code> at <code>sparc1.cse.cuhk.edu.hk</code>: <pre>scp *.java sparc1.cse.cuhk.edu.hk:asg1/</pre></li>
+			<li>Copy the folder "<code>source</code>" in the current directory to the home directory at <code>linux1.cse.cuhk.edu.hk</code> with user name <code>mtyiu</code>: <pre>scp -r src/ mtyiu@linux1.cse.cuhk.edu.hk:</pre></li>
+		</ul>
+		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
-        <hr class="short" />
+		<hr class="short" />
 
-        <p>That's all of VM management on OpenStack. Next week you will learn how to configure a Hadoop cluster.</p>
-        <p>Find me at the Facebook group if you have any problems concerning VM management.</p>
-    </div>
-    <script src="js/jquery.min.js"></script>
-    <script src="js/bootstrap.min.js"></script>
-    <script src="js/image.js"></script>
+		<p>That's all of VM management on OpenStack. Next week you will learn how to configure a Hadoop cluster.</p>
+		<p>Find me at the Facebook group if you have any problems concerning VM management.</p>
+	</div>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/image.js"></script>
 </body>
 </html>
