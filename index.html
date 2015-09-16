@@ -100,7 +100,6 @@
 					<li><strong>RAM: </strong>3 GB</li>
 					<li><strong>Virtual CPUs (vCPU): </strong>3</li>
 					<li><strong>Instance (or VM) count: </strong>3</li>
-					<li><strong>Disk: </strong>20 GB</li>
 				</ul>
 			</li>
 		</ul>
@@ -206,7 +205,14 @@
 				</div>
 			</div>
 			<div class="col-md-6">
-				<p>There are two approaches to log in to the VMs: using user name and password, or using public key authentication <a href="https://help.ubuntu.com/community/SSH/OpenSSH/Keys" target="_blank">[<i class="fa fa-question-circle"></i>]</a>. The later one is widely supported in cloud platform (e.g., Amazon EC2) so you are suggested to try it now! (<strong>Note: </strong>As usual, Windows users will face some difficulties when using public key authentication for SSH. Thus, you may stick with password authentication and ignore this part.)</p>
+				<p>
+					There are two approaches to log in to the VMs:
+					<ul>
+						<li>Using user name and password; or</li>
+						<li>Using public key authentication <a href="https://help.ubuntu.com/community/SSH/OpenSSH/Keys" target="_blank">[<i class="fa fa-question-circle"></i>]</a></li>
+					</ul>
+					The later one is widely supported in cloud platform (e.g., Amazon EC2) so you are suggested to try it now! (<strong>Note: </strong>As usual, Windows users will face some difficulties when using public key authentication for SSH. Thus, you may stick with password authentication and ignore this part.)
+				</p>
 				<p>In public key authentication, two files will be generated, namely the private key and public key. The public key is stored inside the machine, while the private key is kept in a separate place as it is required to log in.</p>
 				<p>In our OpenStack platform, the key generation is done for you. You just need to request for a keypair from the dashboard, and then you can download the private key.</p>
 				<p><strong>Step 1.</strong> Navigate to "Access &amp; Security" panel and select "Create keypair".</p>
