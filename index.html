@@ -61,8 +61,6 @@
 					<li><a href="#scp">Bonus: Using <code>scp</code></a></li>
 				</ul>
 			</div>
-			<div class="col-md-4">
-			</div>
 		</div>
 
 		<hr class="short" />
@@ -506,6 +504,7 @@ apt-get install oracle-java7-installer</pre>
 		<ul>
 			<li>Copy all Java source files in the current directory to the folder <code>asg1/</code> at <code>sparc1.cse.cuhk.edu.hk</code>: <pre>scp *.java sparc1.cse.cuhk.edu.hk:asg1/</pre></li>
 			<li>Copy the folder "<code>src</code>" in the current directory to the home directory at <code>linux1.cse.cuhk.edu.hk</code> with user name <code>mtyiu</code>: <pre>scp -r src/ mtyiu@linux1.cse.cuhk.edu.hk:</pre></li>
+			<li><span class="text-danger"><strong>[New]</strong></span> Copy the file <code>test.txt</code> from a department UNIX/Linux machine to your VM (whose IP address is <code>10.10.11.8</code>) using the <code>root</code> account: <pre>scp -P 12208 test.txt root@137.189.89.214:</pre>(Note: The port number is specified using <code>-P</code> and it <strong>MUST</strong> appears right after the command <code>scp</code> and before the source file.)</li>
 		</ul>
 		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
 
