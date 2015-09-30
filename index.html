@@ -41,7 +41,12 @@
 					<li><a href="#introduction">Introduction</a></li>
 					<li><a href="#platform">Our platform</a></li>
 					<li><a href="#architecture">Architecture</a></li>
-					<li><a href="#preparation">Preparation</a></li>
+					<li>
+						<a href="#preparation">Preparation</a>
+						<ul>
+							<li><a href="#ssh-port-forwarding">What should I do if I cannot use CSE VPN?</a></li>
+						</ul>
+					</li>
 					<li><a href="#login">Logging in the dashboard</a></li>
 					<li><a href="#keypair">Creating a keypair</a></li>
 					<li><a href="#launch-vm">Launching a VM</a></li>
@@ -137,13 +142,31 @@
 		<h4>Preparation</h4>
 		<p>Now we are almost ready to get your hands dirty. Before we log in to the OpenStack Dashboard, you need to prepare:</p>
 		<ul>
-			<li>Your CSE UNIX Account (email me if you do not have one)</li>
+			<li>Your CSE UNIX Account</li>
 			<li>A networked computer which is connected to the CSE VPN / in CSE network (e.g., the computers in our labs) <a href="https://wiki.cse.cuhk.edu.hk/tech/network/vpn/l2tp-ipsec" target="_blank">[<i class="fa fa-info-circle"></i> how to connect?]</a></li>
 			<li><em>(Windows user only)</em> Secure Shell Client or <a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html" target="_blank">PuTTY</a></li>
 			<li>A web browser (Chrome or Firefox is suggested, but not Internet Explorer <i class="fa fa-smile-o"></i>)</li>
 			<li>The user name and password for logging in the OpenStack Dashboard (which will be distributed after the add-drop period)</li>
 		</ul>
 		<div class="top"><a href="#top"><i class="fa fa-arrow-up"></i> Back to Top</a></div>
+
+		<a name="ssh-port-forwarding"></a>
+		<div class="panel panel-warning">
+			<div class="panel-heading"><h4>What should I do if I cannot use CSE VPN?</h4></div>
+			<div class="panel-body">
+				<p>Don't worry! As long as you can have a CSE UNIX account, you can use <strong>SSH port forwarding</strong> to access our OpenStack Dashboard.</p>
+				<p>
+					You can find the instructions at:
+					<a href="files/ssh-port-forwarding.pdf" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-file"></i> PDF</a>
+				</p>
+				<p>I also prepare two demo videos:</p>
+				<p>
+					<a href="https://youtu.be/IYPB_Z3ZxeA" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-youtube"></i> Connecting to OpenStack Dashboard using SSH port forwarding on Windows</a>
+					<a href="https://youtu.be/-vuP5xiExR4" target="_blank" class="btn btn-sm btn-primary"><i class="fa fa-youtube"></i> Connecting to the VM</a>
+				</p>
+			</div>
+			</div>
+		</div>
 
 		<hr class="short" />
 
